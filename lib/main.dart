@@ -12,9 +12,17 @@ import 'helpers/adaptor.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final appDocumentDirectory =
-      await path_provider.getApplicationDocumentsDirectory();
-  await Hive.initFlutter(appDocumentDirectory.path);
+  // final appDocumentDirectory =
+  //     await path_provider.getApplicationDocumentsDirectory();
+  // await Hive.initFlutter(appDocumentDirectory.path);
+
+  if (kIsWeb) {
+    await Hive.initFlutter();
+  } else {
+    final appDocumentDirectory =
+        await path_provider.getApplicationDocumentsDirectory();
+    await Hive.initFlutter(appDocumentDirectory.path);
+  }
 
   Hive.registerAdapter(TaskAdapter());
 
