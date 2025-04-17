@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:todo_interview/screens/home.dart';
@@ -20,9 +21,13 @@ void main() async {
   await Hive.openBox<Task>('tasks');
   await Hive.openBox('settings');
 
-  /* no tilting */
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((value) => runApp(MyApp()));
+  /* no tilting on mobile*/
+  if (defaultTargetPlatform == TargetPlatform.android) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+        .then((value) => runApp(const MyApp()));
+  } else {
+    runApp(const MyApp());
+  }
 }
 
 class MyApp extends StatefulWidget {
